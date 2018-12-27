@@ -41,7 +41,8 @@ const	struct	cmdent	cmdtab[] = {
 	{"l5e4",	FALSE,	xsh_l5e4},
 	{"rds",		FALSE,	xsh_rds},
 	{"l6e1",	FALSE,	xsh_l6e1},
-	{"l7e2",	FALSE,	xsh_l7e2}
+	{"l7e2",	FALSE,	xsh_l7e2},
+	{"blockchain", FALSE, xsh_BC}
 
 };
 

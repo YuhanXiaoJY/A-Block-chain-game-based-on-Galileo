@@ -42,3 +42,4 @@
 #include <stdio.h>
 #include <string.h>
 #include <catch.h>
+#include <blockchain.h>
