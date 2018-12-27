@@ -69,8 +69,8 @@ void BC_scan()
 			}
 		fprintf(stderr, "host %s is alive\n", args[i]);
 		flags[bcdevnum] = i;
+		dot2ip(args[i], &bcdevice[bcdevnum]);
 		bcdevnum++;
-
 
 	}
 
@@ -78,6 +78,7 @@ void BC_scan()
 	fprintf("The device list:\n");
 	for(i = 0; i<bcdevnum; i++)
 	{
+
 		fprintf("%3d %s\n", i, args[flags[i]]);
 	}
 
