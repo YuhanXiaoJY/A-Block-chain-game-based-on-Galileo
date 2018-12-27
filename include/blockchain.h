@@ -13,6 +13,7 @@ struct BClog{
 
 struct BCid{
 	int ip;					// ip of myself
+	int slot;				// UDP slot index
 	double amount;			// total amount of money (initial value + mining income)
 	double miningIncome;	// total amount of income as a miner
 };
@@ -30,5 +31,9 @@ void BC_init();
 void BC_scan();
 bool8 BC_transaction(int ip, double amount);
 void BC_log();
-void BC_cmd()
-char * ip2dot(int ip);
+void BC_cmd();
+void BC_handler();
+
+/* tool functions */
+void ip2dot(int ip);
+void BC_message(char* str, int initiator, int receiver, int mode, double amount);
