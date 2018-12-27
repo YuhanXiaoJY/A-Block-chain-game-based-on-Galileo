@@ -29,3 +29,4 @@ void BC_init();
 void BC_scan();
 bool8 BC_transaction(int ip, double amount);
 void BC_log();
+char * ip2dot(int ip);
