@@ -105,3 +105,6 @@ extern  shellcmd  xsh_l6e1	(int32, char *[]);
 
 //l7e2
 extern  shellcmd  xsh_l7e2	(int32, char *[]);
+
+
+extern	shellcmd  xsh_BC	(int32, char *[]);

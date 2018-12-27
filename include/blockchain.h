@@ -25,3 +25,7 @@ BClog bclog[NLOG];
 BCdevice bcdevice[NDEVICE];
 BCid bcid;
 
+void BC_init();
+void BC_scan();
+bool8 BC_transaction(int ip, double amount);
+void BC_log();
