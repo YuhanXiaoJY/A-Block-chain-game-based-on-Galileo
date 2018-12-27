@@ -24,9 +24,11 @@ struct BCdevice{			// available device in the subnet
 BClog bclog[NLOG];
 BCdevice bcdevice[NDEVICE];
 BCid bcid;
+int bcdevnum;
 
 void BC_init();
 void BC_scan();
 bool8 BC_transaction(int ip, double amount);
 void BC_log();
+void BC_cmd()
 char * ip2dot(int ip);
