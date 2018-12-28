@@ -107,8 +107,28 @@ static void protocol4(){
 	
 }
 
-static void protocol5(){
-	
+// get protocol5, behave as a initiator
+// transaction is successful and then minus my account, keep a record
+static bool8 protocol5(int ip1, int ip2, double amount){
+	if (ip1 != BCid.ip){
+		kprintf("[protocol5]: initiator ip is wrong.\n");
+		return FALSE;
+	}
+	int i;
+	for (i = 0; i < nbc_ilog; i++){
+		if (bc_ilog[i].receiver == ip2 && bc_ilog[i].transacion == amount)
+			break;
+	}
+	if (i == nbc_ilog){
+		// did not find ilog record
+		kprintf("[protocal5]: fail to find related record.\n");
+		return FALSE;
+	}
+
+	// found ilog which is bc_ilog[i] and finish this transaction
+	bc_ilog[i].isok = TRUE;
+	BCid.amount -= amount;
+	return TRUE;
 }
 
 static void protocol6(){
@@ -137,7 +157,7 @@ void BC_handler(){
 			case 2: protocol2(initiator, reciver, amount); break;
 			case 3: protocol3(initiator, reciver, amount, remip); break;
 			case 4: protocol4(); break;
-			case 5: protocol5(); break;
+			case 5: protocol5(initiator, reciver, amount); break;
 			case 6: protocol6(); break;
 			default: printf("Wrong protocol code!\n"); break;
 		}
