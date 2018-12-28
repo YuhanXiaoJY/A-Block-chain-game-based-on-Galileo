@@ -1,4 +1,5 @@
 #include <xinu.h>
+#include <stdio.h>
 
 static void transaction(){	
 	int receiver;

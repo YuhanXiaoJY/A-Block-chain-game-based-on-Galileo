@@ -14,12 +14,13 @@ void BC_scan()
 	bcdevnum = 0;
 	char args[256][50];
 	bool8 flags[256];
+	int32 ip;
 	ip = getlocalip();
-	for(i = 1; i<256; i++)
+	for(i = 100; i<110; i++)
 	{
 		sprintf(args[i], "%d.%d.%d.%d", (ip>>24)&0xff, (ip>>16)&0xff, (ip>>8)&0xff
-								i);
-		flags[i] = FALSE;
+								,i);
+		flags[i] = 0;
 		/* convert argument to binary */
 
 		retval = dot2ip(args[i], &ipaddr);
@@ -40,15 +41,16 @@ void BC_scan()
 		/*	the sequence number and increment			*/
 
 		nextval = seq;
-		for (i = 0; i<sizeof(buf); i++) {
-			buf[i] = 0xff & nextval++;
+		int j =0;
+		for (j = 0; j<sizeof(buf); j++) {
+			buf[j] = 0xff & nextval++;
 		}
 
 		/* Send an ICMP Echo Request */
 		retval = icmp_send(ipaddr, ICMP_ECHOREQST, slot,
 						seq++, buf, sizeof(buf));
 		if (retval == SYSERR) {
-			fprintf(stderr, "Ping: no response from host %s\n", args[i]);
+			fprintf(stderr, "Ping:%s no response from host.\n", args[i]);
 			icmp_release(slot);
 			continue;
 		}
@@ -58,7 +60,7 @@ void BC_scan()
 		retval = icmp_recv(slot, buf, sizeof(buf), 3000);
 		icmp_release(slot);
 		if (retval == TIMEOUT) {
-			fprintf(stderr, "Ping: no response from host %s\n",
+			fprintf(stderr, "Ping:%s time out.\n",
 					args[1]);
 			continue;
 		}
@@ -69,17 +71,17 @@ void BC_scan()
 			}
 		fprintf(stderr, "host %s is alive\n", args[i]);
 		flags[bcdevnum] = i;
-		dot2ip(args[i], &bcdevice[bcdevnum]);
+		dot2ip(args[i], &bcdevice[bcdevnum].ip);
 		bcdevnum++;
 
 	}
 
-	fprintf("Start-------------------------------\n");
-	fprintf("The device list:\n");
+	kprintf("Start-------------------------------\n");
+	kprintf("The device list:\n");
 	for(i = 0; i<bcdevnum; i++)
 	{
 
-		fprintf("%3d %s\n", i, args[flags[i]]);
+		kprintf("%3d %s\n", i, args[flags[i]]);
 	}
 
 	

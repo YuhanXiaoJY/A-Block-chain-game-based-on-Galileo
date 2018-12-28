@@ -1,10 +1,8 @@
 /*
 This file contains the shellcmd for the block chain game.
 */
-#include<xinu>
+#include<xinu.h>
 #include<stdio.h>
-using namespace std;
-
 
 shellcmd xsh_BC()
 {

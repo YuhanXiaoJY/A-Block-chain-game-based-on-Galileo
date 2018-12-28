@@ -15,7 +15,7 @@ void	clkhandler()
 	/* Decrement the ms counter, and see if a second has passed */
 
 	//l5e4
-	int i;
+	/*int i;
 	
 	for(i=1; i<ARP_SIZ; i++)
 	{
@@ -30,7 +30,7 @@ void	clkhandler()
 				kprintf("ARP_SIZ: %d\n", ARP_SIZ);
 			}
 		}
-	}
+	}*/
 	//l5e4
 
 	if((--count1000) <= 0) {
