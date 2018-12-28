@@ -14,8 +14,10 @@ bool8 BC_transaction(int id, double amount){
 
 	char s[100];
 	BC_message(s, bcid.ip, ip, 1, amount);
-	udp_sendto(bcid.slot, ip, BCPORT, s, strlen(s));
 	
+	int retval = udp_sendto(bcid.slot, ip, BCPORT, s, strlen(s));
+	if (retval == SYSERR)
+		return FALSE;
 	return TRUE;
 }
 
