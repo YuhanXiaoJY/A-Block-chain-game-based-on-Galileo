@@ -22,9 +22,9 @@ struct BCdevice{			// available device in the subnet
 	int ip;
 };
 
-BClog bclog[NLOG];
-BCdevice bcdevice[NDEVICE];
-BCid bcid;
+struct BClog bclog[NLOG];
+struct BCdevice bcdevice[NDEVICE];
+struct BCid bcid;
 int bcdevnum;
 
 void BC_init();
