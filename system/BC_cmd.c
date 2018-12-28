@@ -37,14 +37,17 @@ void BC_cmd(){
 	int func;
 	char s_func[20];
 
-	printf("FUNCTION:\n0.SCAN\n1.TRANSACTION\n2.LOG\nEnter a number:");
+	printf("FUNCTION:\n0.SCAN\n1.TRANSACTION\n2.LOG\n3.ILOG\n4.RLOG\n5.MLOG\nEnter a number:");
 	read(CONSOLE, s_func, 15);
 	func = atoi(s_func);
 	
 	switch(func){
 		case 0: BC_scan();	break;
 		case 1: transaction(); break;
-		case 2: BC_log(); break;
+		case 2: BC_logging(); break;
+		case 3: BC_ilogging(); break;
+		case 4: BC_rlogging(); break;
+		case 5: BC_mlogging(); break;
 		default: printf("Please enter a valid number!\n");
 	}
 	

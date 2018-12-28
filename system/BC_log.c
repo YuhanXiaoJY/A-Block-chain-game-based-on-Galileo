@@ -13,10 +13,6 @@ void BC_logging()
 	kprintf("Initial amount: 100\n");
 	kprintf("My balance: %f\n", bcid.amount);
 	kprintf("My miningIncome: %f\n", bcid.miningIncome);
-	BC_scan();
-	BC_ilogging();
-	BC_rlogging();
-	BC_mlogging();
 
 }
 

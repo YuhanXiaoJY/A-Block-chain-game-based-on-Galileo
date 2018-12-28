@@ -1,7 +1,14 @@
 #include <xinu.h>
+#define EPS 1e-2
+
+static bool8 equals(double a, double b){
+	double x = a - b;
+	return x < EPS && x > -EPS;
+}
 
 // get protocal1, behave as a receiver, broadcast protocal2 to find a miner.
 static bool8 protocol1(int ip1, int ip2, double amount ){
+	kprintf("[protocal1]:enter protocal1\n");
 	int i;
 	if(bcdevnum <= 0){
 		kprintf("[protocal1]:no active device, where did you get the protocal1?\n");
@@ -78,11 +85,11 @@ static bool8 protocol3(int ip1, int ip2, double amount, uint32 minerip){
 	}
 	
 	int i;
-	for(i = 0; i < nbc_rlog - 1; i++)
+	for(i = 0; i < nbc_rlog; i++)
 	{
 		struct BC_rlog tmp_log = bc_rlog[i];
 		if(ip1 == tmp_log.initiator && ip2 == tmp_log.receiver
-			&& amount == tmp_log.transaction && tmp_log.waiting == TRUE)
+			&& equals(amount, tmp_log.transaction) && tmp_log.waiting == TRUE)
 		{
 			bc_rlog[i].waiting = FALSE;
 			bc_rlog[i].miner = minerip;
@@ -103,7 +110,7 @@ static bool8 protocol3(int ip1, int ip2, double amount, uint32 minerip){
 			return TRUE;
 		}
 		else if(ip1 == tmp_log.initiator && ip2 == tmp_log.receiver
-			&& amount == tmp_log.transaction && tmp_log.waiting == FALSE)
+			&& equals(amount, tmp_log.transaction) && tmp_log.waiting == FALSE)
 		{
 			return FALSE;
 		}
@@ -116,17 +123,18 @@ static bool8 protocol3(int ip1, int ip2, double amount, uint32 minerip){
 static bool8 protocol4(int ip1, int ip2, double amount){
 	int i;
 	bool8 flag = FALSE;
-	for(i = nbc_mlog - 2; i >= 0; i--)
+	for(i = nbc_mlog - 1; i >= 0; i--)
 	{
 		struct BC_mlog tmp_log = bc_mlog[i];
 		if(ip1 == tmp_log.initiator && ip2 == tmp_log.receiver
-			&& amount == tmp_log.transaction && tmp_log.progress == 1)
+			&& equals(amount, tmp_log.transaction) && tmp_log.progress == 1)
 		{// match the specified transaction
 			// find, finish the mlog info
 			bc_mlog[i].progress = 2;
 			bc_mlog[i].fee = 0.1*amount;
 			bc_mlog[i].isok = TRUE;
 			bcid.amount += 0.1 * amount;
+			bcid.miningIncome += 0.1 * amount;
 			char s[100];
 			char tmp[50];
 			ip2dot(ip1, tmp);
@@ -176,10 +184,28 @@ static bool8 protocol5(int ip1, int ip2, double amount){
 		kprintf("[protocol5]: initiator ip is wrong.\n");
 		return FALSE;
 	}
+	char sip1[20];
+	char sip2[20];
+	ip2dot(ip1, sip1);
+	ip2dot(ip2, sip2);
+	kprintf("ip2: %s\n", sip2);
+	kprintf("amount: %f\n", amount);
 	int i;
-	for (i = 0; i < nbc_ilog - 1; i++){
-		if (bc_ilog[i].receiver == ip2 && bc_ilog[i].transaction == amount)
-			break;
+	for (i = 0; i < nbc_ilog; i++){
+		ip2dot(bc_ilog[i].initiator, sip1);
+		ip2dot(bc_ilog[i].receiver, sip2);
+
+		kprintf("%s->%s: %f\n", sip1, sip2, bc_ilog[i].transaction);
+		if (bc_ilog[i].receiver == ip2){
+			printf("AAAA");
+			if (equals(bc_ilog[i].transaction, amount)){
+				printf("BBBB");
+				break;
+			}
+			
+		}
+		//if (bc_ilog[i].receiver == ip2 && equals(bc_ilog[i].transaction, amount))
+			//break;
 	}
 	if (i == nbc_ilog){
 		// did not find ilog record
@@ -197,12 +223,13 @@ static bool8 protocol5(int ip1, int ip2, double amount){
 // get protocol6, behave as an outsider
 // keep bc_log
 static void protocol6(int ip1, int ip2, double amount){
+	kprintf("[protocal6]:enter protocal6");
 	int i = 0;
 	struct BClog* plog;
 
 	for (i = 0; i < nbclog; i++){
 		plog = bclog + i;
-		if (plog->initiator == ip1 && plog->receiver == ip2 && plog->transaction == amount && plog->finished == FALSE)
+		if (plog->initiator == ip1 && plog->receiver == ip2 && equals(plog->transaction, amount) && plog->finished == FALSE)
 			break;
 	}
 	
@@ -217,7 +244,7 @@ static void protocol6(int ip1, int ip2, double amount){
 		// found an bclog
 		plog->finished = TRUE;
 	}
-	kprintf("[protocol]: log done!\n");
+	kprintf("[protocol6]: log done!\n");
 }
 
 void BC_handler(){
@@ -233,14 +260,17 @@ void BC_handler(){
 	while(1){
 
 		sleepms(100);
-		kprintf("[BC_handler]:ready to receive protocol.\n");
+		//kprintf("[BC_handler]:ready to receive protocol.\n");
 		int retval = udp_recvaddr(bcid.slot, &remip, &remport, buff, 100, 100);
-		kprintf("[BC_handler]:receive protocol successfully.\n");
+		//kprintf("[BC_handler]:receive protocol successfully.\n");
 		if (retval == SYSERR || retval == TIMEOUT)
 			continue;
 		BC_decode(buff, retval, &initiator, &reciver, &protocol, &amount);
+		kprintf("udp packet: %s\n", buff);
+		kprintf("protocol: %d\namount: %f\n", protocol, amount);
 		
 		wait(lock);
+		kprintf("[BC_handler]:get lock.\n");
 		switch(protocol){
 			case 1:	protocol1(initiator, reciver, amount); break;
 			case 2: protocol2(initiator, reciver, amount); break;
@@ -250,6 +280,8 @@ void BC_handler(){
 			case 6: protocol6(initiator, reciver, amount); break;
 			default: printf("Wrong protocol code!\n"); break;
 		}
+
 		signal(lock);
+		kprintf("[BC_handler]:release lock!\n");
 	}	
 }

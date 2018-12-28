@@ -10,7 +10,7 @@ shellcmd xsh_BC()
 	resume(create(BC_handler, 8192, 100, "BC_handler", 0));
 	while(1)
 	{
-		BC_scan();
+
 		BC_cmd();
 	}
 	return 0;

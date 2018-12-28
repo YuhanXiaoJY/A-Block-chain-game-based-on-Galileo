@@ -4,6 +4,7 @@
 void BC_scan()
 {
 	wait(lock);
+	kprintf("[scan]:get lock.\n");
 	uint32	ipaddr;			/* IP address in binary		*/
 	int32	retval;			/* return value			*/
 	int32	slot;			/* Slot in ICMP to use		*/
@@ -79,7 +80,8 @@ void BC_scan()
 		bcdevnum++;
 
 	}
-
+	signal(lock);
+	kprintf("[scan]:release lock.\n");
 	kprintf("Start-------------------------------\n");
 	kprintf("The device list:\n");
 	for(i = 0; i<bcdevnum; i++)
@@ -88,5 +90,5 @@ void BC_scan()
 		kprintf("%3d %s\n", i, args[flags[i]]);
 	}
 
-	signal(lock);
+	
 }
