@@ -180,7 +180,7 @@ static bool8 protocol5(int ip1, int ip2, double amount){
 	}
 	if (i == nbc_ilog){
 		// did not find ilog record
-		kprintf("[protocal5]: fail to find related record.\n");
+		kprintf("[protocol5]: fail to find related record.\n");
 		return FALSE;
 	}
 
@@ -190,8 +190,28 @@ static bool8 protocol5(int ip1, int ip2, double amount){
 	return TRUE;
 }
 
-static void protocol6(){
+// get protocol6, behave as an outsider
+// keep bc_log
+static void protocol6(int ip1, int ip2, double amount){
+	int i = 0;
+	struct BC_ilog* plog;
+
+	for (i = 0; i < nbclog; i++){
+		plog = bclog + i;
+		if (plog->initiator == ip1 && plog->receiver == ip2 && plog->transaction == amount && plog->finished == FALSE)
+			break;
+	}
 	
+	if (i == nbclog){
+		// did not find an bclog, then create one
+		plog->initiator = ip1;
+		plog->receiver = ip2;
+		plog->transaction = amount;
+		plog->finished = FALSE;
+	}else{
+		// found an bclog
+		plog->finished = TRUE;
+	}
 }
 
 void BC_handler(){
@@ -217,7 +237,7 @@ void BC_handler(){
 			case 3: protocol3(initiator, reciver, amount, remip); break;
 			case 4: protocol4(initiator, reciver, amount); break;
 			case 5: protocol5(initiator, reciver, amount); break;
-			case 6: protocol6(); break;
+			case 6: protocol6(initiator, reciver, amount); break;
 			default: printf("Wrong protocol code!\n"); break;
 		}
 	}	
