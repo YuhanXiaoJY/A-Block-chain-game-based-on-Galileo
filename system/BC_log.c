@@ -5,7 +5,7 @@ void BC_logging()
 {
 	char tmp[50];
 	int ip = bcid.ip;
-	ip2dot(ip, tmp)
+	ip2dot(ip, tmp);
 
 	kprintf("Log info:\n");
 	kprintf("--------------------------------\n");
@@ -31,9 +31,9 @@ void BC_ilogging()
 		char ip1[50];
 		char ip2[50];
 		char myip[50];
-		tmp1 = bc_ilog[i].initiator;
-		tmp2 = bc_ilog[i].receiver;
-		tmp3 = getlocalip();
+		int tmp1 = bc_ilog[i].initiator;
+		int tmp2 = bc_ilog[i].receiver;
+		int tmp3 = getlocalip();
 		ip2dot(tmp1, ip1);
 		ip2dot(tmp2, ip2);
 		ip2dot(tmp3, myip);
@@ -60,9 +60,9 @@ void BC_rlogging()
 		char ip1[50];
 		char ip2[50];
 		char myip[50];
-		tmp1 = bc_rlog[i].initiator;
-		tmp2 = bc_rlog[i].receiver;
-		tmp3 = getlocalip();
+		int tmp1 = bc_rlog[i].initiator;
+		int tmp2 = bc_rlog[i].receiver;
+		int tmp3 = getlocalip();
 		ip2dot(tmp1, ip1);
 		ip2dot(tmp2, ip2);
 		ip2dot(tmp3, myip);
@@ -89,9 +89,9 @@ void BC_mlogging()
 		char ip1[50];
 		char ip2[50];
 		char myip[50];
-		tmp1 = bc_mlog[i].initiator;
-		tmp2 = bc_mlog[i].receiver;
-		tmp3 = getlocalip();
+		int tmp1 = bc_mlog[i].initiator;
+		int tmp2 = bc_mlog[i].receiver;
+		int tmp3 = getlocalip();
 		ip2dot(tmp1, ip1);
 		ip2dot(tmp2, ip2);
 		ip2dot(tmp3, myip);

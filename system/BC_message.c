@@ -1,5 +1,4 @@
 #include <xinu.h>
-#include <>
 void BC_message(char* str, int initiator, int receiver, int mode, double amount){
 	char initiator_dot[20];
 	char receiver_dot[20];
@@ -27,9 +26,7 @@ bool8 BC_decode(char* buff, int len, int* initiator, int* receiver, int* protoco
 	printf("len(str[3]): %d\n", strlen(str[3]));	
 	dot2ip(str[0], (uint32 *)initiator);
 	dot2ip(str[1], (uint32 *)receiver);
-	//sscanf(str[2], "%d", protocol);
-	//sscanf(str[3], "%f", amount);
-	protocol = atoi(str[2]);
-	//amount = atof(str[3]);
+	*protocol = atoi(str[2]);
+	*amount = atof(str[3]);
 	return TRUE;
 }
