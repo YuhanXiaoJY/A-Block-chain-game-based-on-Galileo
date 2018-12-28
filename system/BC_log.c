@@ -4,7 +4,7 @@
 void BC_log()
 {
 	char tmp[50];
-	ip = bcid.ip;
+	int ip = bcid.ip;
 	sprintf(tmp, "%d.%d.%d.%d", (ip>>24)&0xff, (ip>>16)&0xff, (ip>>8)&0xff
 								,(ip)&0xff);
 	kprintf("Log info:\n");
