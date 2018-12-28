@@ -12,4 +12,5 @@ void BC_init()
 	nbc_ilog = 0;
 	nbc_rlog = 0;
 	nbc_mlog = 0;
+	lock = semcreate(1);
 }

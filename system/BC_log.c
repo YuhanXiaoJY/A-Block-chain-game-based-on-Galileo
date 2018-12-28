@@ -33,7 +33,7 @@ void BC_ilogging()
 		char myip[50];
 		int tmp1 = bc_ilog[i].initiator;
 		int tmp2 = bc_ilog[i].receiver;
-		int tmp3 = getlocalip();
+		int tmp3 = bcid.ip;
 		ip2dot(tmp1, ip1);
 		ip2dot(tmp2, ip2);
 		ip2dot(tmp3, myip);
@@ -62,7 +62,7 @@ void BC_rlogging()
 		char myip[50];
 		int tmp1 = bc_rlog[i].initiator;
 		int tmp2 = bc_rlog[i].receiver;
-		int tmp3 = getlocalip();
+		int tmp3 = bcid.ip;
 		ip2dot(tmp1, ip1);
 		ip2dot(tmp2, ip2);
 		ip2dot(tmp3, myip);
@@ -91,7 +91,7 @@ void BC_mlogging()
 		char myip[50];
 		int tmp1 = bc_mlog[i].initiator;
 		int tmp2 = bc_mlog[i].receiver;
-		int tmp3 = getlocalip();
+		int tmp3 = bcid.ip;
 		ip2dot(tmp1, ip1);
 		ip2dot(tmp2, ip2);
 		ip2dot(tmp3, myip);

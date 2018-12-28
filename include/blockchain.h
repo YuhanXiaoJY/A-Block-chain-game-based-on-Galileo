@@ -69,3 +69,10 @@ void BC_handler();
 void ip2dot(int ip, char * a);
 void BC_message(char* str, int initiator, int receiver, int mode, double amount);
 bool8 BC_decode(char * str, int len, int *initiator, int *receiver, int *mode, double *amount);
+/* in file atof.c */
+extern double atof(char * str);
+
+/* in file ftoa.c */
+extern void ftoa(double d, char * str, int precwq);
+
+sid32 lock;
