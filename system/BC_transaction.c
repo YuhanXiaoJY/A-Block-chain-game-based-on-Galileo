@@ -1,7 +1,6 @@
 #include <xinu.h>
 
 bool8 BC_transaction(int id, double amount){
-	int ip;
 	if (id < 0 || id > bcdevnum){
 		printf("Wrong device ID!\n");
 		return FALSE;
@@ -13,9 +12,9 @@ bool8 BC_transaction(int id, double amount){
 	}
 
 	char s[100];
-	BC_message(s, bcid.ip, ip, 1, amount);
+	BC_message(s, bcid.ip, bcdevice[id].ip, 1, amount);
 	
-	int retval = udp_sendto(bcid.slot, ip, BCPORT, s, strlen(s));
+	int retval = udp_sendto(bcid.slot, bcdevice[id].ip, BCPORT, s, strlen(s));
 	if (retval == SYSERR)
 		return FALSE;
 	return TRUE;

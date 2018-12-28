@@ -14,18 +14,24 @@ struct BC_ilog{
 	int initiator;			// ip of initiator (use dot)
 	int receiver;
 	double transaction;		// transaction amount
+	bool8 isok;				// whether the transaction is ok
 };
 
 struct BC_rlog{
 	int initiator;			// ip of initiator (use dot)
 	int receiver;
+	int miner;
 	double transaction;		// transaction amount
+	bool8 isok;				// whether the transaction is ok
+	bool8 waiting;			// waiting for miner
 };
 
 struct BC_mlog{
 	int initiator;			// ip of initiator (use dot)
 	int receiver;
 	double transaction;		// transaction amount
+	bool8 isok;
+	int progress;
 };
 
 struct BCid{
