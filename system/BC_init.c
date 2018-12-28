@@ -8,4 +8,8 @@ void BC_init()
 	bcid.ip = getlocalip();
 	bcid.slot = udp_register(0, BCPORT, BCPORT);
 	bcdevnum = 0;
+	nbclog = 0;
+	nbc_ilog = 0;
+	nbc_rlog = 0;
+	nbc_mlog = 0;
 }
