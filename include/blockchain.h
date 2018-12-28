@@ -19,12 +19,12 @@ struct BCid{
 };
 
 struct BCdevice{			// available device in the subnet
-	int ip;
+	uint32 ip;
 };
 
-BClog bclog[NLOG];
-BCdevice bcdevice[NDEVICE];
-BCid bcid;
+struct BClog bclog[NLOG];
+struct BCdevice bcdevice[NDEVICE];
+struct BCid bcid;
 int bcdevnum;
 
 void BC_init();
@@ -35,5 +35,5 @@ void BC_cmd();
 void BC_handler();
 
 /* tool functions */
-void ip2dot(int ip);
+void ip2dot(int ip, char * a);
 void BC_message(char* str, int initiator, int receiver, int mode, double amount);

@@ -87,7 +87,7 @@ status	arp_resolve (
 	/*	send an ARP request to obtain the answer		*/
 	
 	//l5e4
-	kprintf("Going to alloc arpcache.\n");
+	//kprintf("Going to alloc arpcache.\n");
 	//l5e4
 	slot = arp_alloc();
 	if (slot == SYSERR) {
@@ -311,7 +311,7 @@ int32	arp_alloc ()
 					NULLCH, sizeof(struct arpentry));
 			
 			//l5e4
-			kprintf("l5e4: %d\n",slot);
+			//kprintf("l5e4: %d\n",slot);
 			//l5e4
 			return slot;
 		}
