@@ -10,6 +10,23 @@ struct BClog{
 	bool8 finished;			// whether received messages from both receiver and miner
 };
 
+struct BC_ilog{
+	int initiator;			// ip of initiator (use dot)
+	int receiver;
+	double transaction;		// transaction amount
+};
+
+struct BC_rlog{
+	int initiator;			// ip of initiator (use dot)
+	int receiver;
+	double transaction;		// transaction amount
+};
+
+struct BC_mlog{
+	int initiator;			// ip of initiator (use dot)
+	int receiver;
+	double transaction;		// transaction amount
+};
 
 struct BCid{
 	int ip;					// ip of myself
@@ -23,8 +40,12 @@ struct BCdevice{			// available device in the subnet
 };
 
 struct BClog bclog[NLOG];
+struct BC_ilog bc_ilog[NLOG];
+struct BC_rlog bc_rlog[NLOG];
+struct BC_mlog bc_mlog[NLOG];
 struct BCdevice bcdevice[NDEVICE];
 struct BCid bcid;
+int nbclog, nbc_ilog, nbc_rlog, nbc_mlog;
 int bcdevnum;
 
 void BC_init();
@@ -37,3 +58,4 @@ void BC_handler();
 /* tool functions */
 void ip2dot(int ip, char * a);
 void BC_message(char* str, int initiator, int receiver, int mode, double amount);
+bool8 BC_decode(char * str, int len, int *initiator, int *receiver, int *mode, double *amount);
