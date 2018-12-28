@@ -30,6 +30,7 @@ struct BC_mlog{
 	int initiator;			// ip of initiator (use dot)
 	int receiver;
 	double transaction;		// transaction amount
+	double fee;
 	bool8 isok;
 	int progress;
 };
