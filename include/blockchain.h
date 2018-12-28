@@ -51,7 +51,10 @@ int bcdevnum;
 void BC_init();
 void BC_scan();
 bool8 BC_transaction(int ip, double amount);
-void BC_log();
+void BC_logging();
+void BC_ilogging();
+void BC_rlogging();
+void BC_mlogging(); 
 void BC_cmd();
 void BC_handler();
 
