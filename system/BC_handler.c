@@ -36,7 +36,9 @@ static bool8 protocol1(int ip1, int ip2, double amount ){
 			kprintf("[protocal1]:fail to send message to %s\n",tmp);
 			continue;
 		}
+		kprintf("[protocal1]send to %s successfully.\n",tmp);
 	}
+	return TRUE;
 	
 }
 
@@ -47,8 +49,9 @@ static bool8 protocol2(int ip1, int ip2, double amount){
 	bc_mlog[nbc_mlog].initiator = ip1;
 	bc_mlog[nbc_mlog].receiver = ip2;
 	bc_mlog[nbc_mlog].transaction = amount;
+	bc_mlog[nbc_mlog].fee = 0.0;
 	bc_mlog[nbc_mlog].isok = FALSE;
-	bc_mlog[nbc_mlog].progress = 0;
+	bc_mlog[nbc_mlog].progress = 1;
 	nbc_mlog ++;
 
 	char s[100];
@@ -62,6 +65,8 @@ static bool8 protocol2(int ip1, int ip2, double amount){
 		kprintf("[protocal2]:fail to send message to %s\n",tmp);
 		return FALSE;
 	}
+	kprintf("[protocal2]:send to %s successfully.\n",tmp);
+	return TRUE;
 }
 
 //get protocal3, behave as a receiver, send the protocal4 to the selected miner
@@ -80,6 +85,8 @@ static bool8 protocol3(int ip1, int ip2, double amount, uint32 minerip){
 		{
 			bc_rlog[i].waiting = FALSE;
 			bc_rlog[i].miner = minerip;
+			bc_rlog[i].isok = TRUE;
+			bcid.amount += 0.9*amount;
 			char s[100];
 			char tmp[50];
 			ip2dot(minerip, tmp);
@@ -91,6 +98,7 @@ static bool8 protocol3(int ip1, int ip2, double amount, uint32 minerip){
 				kprintf("[protocal3]:fail to send message to %s\n",tmp);
 				return FALSE;
 			}
+			kprintf("[protocal3]:send to %s successfully.\n",tmp);
 			return TRUE;
 		}
 		else if(ip1 == tmp_log.initiator && ip2 == tmp_log.receiver
@@ -103,8 +111,59 @@ static bool8 protocol3(int ip1, int ip2, double amount, uint32 minerip){
 	return FALSE;
 }
 
-static void protocol4(){
+//get protocal4, behave as a miner, send protocal to initiator and broadcast
+static bool8 protocol4(int ip1, int ip2, double amount){
+	int i;
+	bool8 flag = FALSE;
+	for(i = nbc_mlog - 2; i >= 0; i--)
+	{
+		struct BC_mlog tmp_log = bc_mlog[i];
+		if(ip1 == tmp_log.initiator && ip2 == tmp_log.receiver
+			&& amount == tmp_log.transaction && tmp_log.progress == 1)
+		{
+			bc_mlog[i].progress = 2;
+			bc_mlog[i].fee = 0.1*amount;
+			bc_mlog[i].isok = TRUE;
+			bcid.amount += 0.1 * amount;
+			char s[100];
+			char tmp[50];
+			ip2dot(ip1, tmp);
+			BC_message(s, ip1, ip2, 5, amount);
 	
+			int retval = udp_sendto(bcid.slot, ip1, BCPORT, s, strlen(s));
+			if (retval == SYSERR)
+			{
+				kprintf("[protocal4]:fail to send message to %s\n",tmp);
+				return FALSE;
+			}
+			kprintf("[protocal4]:send to %s successfully.\n",tmp);
+			flag = TRUE;
+			break;
+		}
+	
+	}
+	if(flag == FALSE)
+	{
+		kprintf("[protocal4]:cannot find the transaction.\n");
+		return FALSE;
+	}
+	//broadcast
+	for(i = 0; i < bcdevnum; i++)
+	{
+		uint32 ip3 = bcdevice[i].ip;
+		char s[100];
+		char tmp[50];
+		ip2dot(ip3, tmp);
+		BC_message(s, ip1, ip2, 6, amount);
+	
+		int retval = udp_sendto(bcid.slot, ip3, BCPORT, s, strlen(s));
+		if (retval == SYSERR)
+		{
+			kprintf("[protocal4]:fail to broadcast to %s\n",tmp);
+			continue;
+		}
+	}
+	return TRUE;
 }
 
 static void protocol5(){
@@ -136,7 +195,7 @@ void BC_handler(){
 			case 1:	protocol1(initiator, reciver, amount); break;
 			case 2: protocol2(initiator, reciver, amount); break;
 			case 3: protocol3(initiator, reciver, amount, remip); break;
-			case 4: protocol4(); break;
+			case 4: protocol4(initiator, reciver, amount); break;
 			case 5: protocol5(); break;
 			case 6: protocol6(); break;
 			default: printf("Wrong protocol code!\n"); break;

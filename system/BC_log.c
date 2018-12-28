@@ -96,8 +96,9 @@ void BC_mlogging()
 		ip2dot(tmp2, ip2);
 		ip2dot(tmp3, myip);
 		
-		kprintf("[log]%-3d: mine for (%s, %s) and get %f.\n", i, ip1, ip2, bc_mlog[i].transaction);
-		income += bc_mlog[i].transaction;
+		kprintf("[log]%-3d: mine for (%s, %s, %f) and get %f.\n", 
+			i, ip1, ip2, bc_mlog[i].transaction, bc_mlog[i].fee);
+		income += bc_mlog[i].fee;
 	}
 	kprintf("-----get %f in all as a miner------\n", income);
 }
