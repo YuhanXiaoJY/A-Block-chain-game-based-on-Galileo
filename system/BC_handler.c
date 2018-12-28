@@ -76,6 +76,7 @@ static bool8 protocol3(int ip1, int ip2, double amount, uint32 minerip){
 		kprintf("[protocal3]:receiver ip is wrong\n");
 		return FALSE;
 	}
+	
 	int i;
 	for(i = 0; i < nbc_rlog - 1; i++)
 	{
@@ -120,7 +121,8 @@ static bool8 protocol4(int ip1, int ip2, double amount){
 		struct BC_mlog tmp_log = bc_mlog[i];
 		if(ip1 == tmp_log.initiator && ip2 == tmp_log.receiver
 			&& amount == tmp_log.transaction && tmp_log.progress == 1)
-		{
+		{// match the specified transaction
+			// find, finish the mlog info
 			bc_mlog[i].progress = 2;
 			bc_mlog[i].fee = 0.1*amount;
 			bc_mlog[i].isok = TRUE;
@@ -143,7 +145,7 @@ static bool8 protocol4(int ip1, int ip2, double amount){
 	
 	}
 	if(flag == FALSE)
-	{
+	{// cannot find the transaction
 		kprintf("[protocal4]:cannot find the transaction.\n");
 		return FALSE;
 	}
@@ -174,7 +176,7 @@ static bool8 protocol5(int ip1, int ip2, double amount){
 		return FALSE;
 	}
 	int i;
-	for (i = 0; i < nbc_ilog; i++){
+	for (i = 0; i < nbc_ilog - 1; i++){
 		if (bc_ilog[i].receiver == ip2 && bc_ilog[i].transacion == amount)
 			break;
 	}
