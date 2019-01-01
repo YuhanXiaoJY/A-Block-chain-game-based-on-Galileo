@@ -20,7 +20,7 @@ void BC_scan()
 	char buffer[50];
 	ip2dot(ip, buffer);
 	kprintf("[BC_scan]localip: %s\n", buffer);
-	for(i = 10; i<20; i++)
+	for(i = 100; i<120; i++)
 	{
 		sprintf(args[i], "%d.%d.%d.%d", (ip>>24)&0xff, (ip>>16)&0xff, (ip>>8)&0xff
 								,i);
