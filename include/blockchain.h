@@ -3,6 +3,9 @@
 #define NLOG 1000
 #define NDEVICE 50
 
+
+
+
 struct BClog{
 	int initiator;			// ip of initiator (use dot)
 	int receiver;
@@ -76,3 +79,4 @@ extern double atof(char * str);
 extern void ftoa(double d, char * str, int precwq);
 
 sid32 lock;
+

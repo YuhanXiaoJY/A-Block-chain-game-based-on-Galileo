@@ -6,7 +6,7 @@ void BC_message(char* str, int initiator, int receiver, int mode, double amount)
 	ftoa(amount, s_amount, 4);
 	ip2dot(initiator, initiator_dot);
 	ip2dot(receiver, receiver_dot);
-	sprintf(str, "%s_%s_%d_%s", initiator_dot, receiver_dot, mode, s_amount);
+	sprintf(str, "%s_%s_%d_%d", initiator_dot, receiver_dot, mode, (int)(amount));
 }
 
 bool8 BC_decode(char* buff, int len, int* initiator, int* receiver, int* protocol, double* amount){

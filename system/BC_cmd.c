@@ -51,7 +51,7 @@ void BC_cmd(){
 		default: printf("Please enter a valid number!\n");
 	}
 	
-	kprintf("[BC_cmd]:cmd returned.\n");
+
 	return;
 }
 

@@ -20,7 +20,7 @@ void BC_scan()
 	char buffer[50];
 	ip2dot(ip, buffer);
 	kprintf("[BC_scan]localip: %s\n", buffer);
-	for(i = 100; i<120; i++)
+	for(i = 0; i<256; i++)
 	{
 		sprintf(args[i], "%d.%d.%d.%d", (ip>>24)&0xff, (ip>>16)&0xff, (ip>>8)&0xff
 								,i);
@@ -65,7 +65,7 @@ void BC_scan()
 		icmp_release(slot);
 		if (retval == TIMEOUT) {
 			fprintf(stderr, "Ping:%s time out.\n",
-					args[1]);
+					args[i]);
 			continue;
 		}
 

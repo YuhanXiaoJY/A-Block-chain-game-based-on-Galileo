@@ -118,7 +118,7 @@ static bool8 protocol3(int ip1, int ip2, double amount, uint32 minerip){
 	}
 	if(flag == FALSE)
 	{
-		kprintf("[protocal3]:cannot find the transaction.\n");
+		// kprintf("[protocal3]:cannot find the transaction.\n");
 		return FALSE;
 	}
 
@@ -155,8 +155,7 @@ static bool8 protocol4(int ip1, int ip2, double amount){
 			// find, finish the mlog info
 			bc_mlog[i].progress = 2;
 			bc_mlog[i].fee = amount/10;
-			kprintf("[**************]:amount: %f\n", amount);
-			kprintf("[**************]:fee: %f\n", 0.1*amount);
+		
 			bc_mlog[i].isok = TRUE;
 			bcid.amount += 0.1 * amount;
 			bcid.miningIncome += 0.1 * amount;
