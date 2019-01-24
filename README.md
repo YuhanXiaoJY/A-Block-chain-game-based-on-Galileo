@@ -1,7 +1,7 @@
 # A-Block-chain-game-based-on-Galileo
 ### Description  
 This is a project for OS-lab.
-Our goal is to implement a little game which simulates the transactions in blockchain, based on a embedded system called Xinu. You can
+Our goal is to implement a little game which simulates the transactions in blockchain, based on a embedded system called Xinu. We compile the code and experiment on Intel Galileo board. You can
 download Xinu from https://xinu.cs.purdue.edu/  
 
 ### Details  
